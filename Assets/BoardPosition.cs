@@ -12,4 +12,14 @@ public class BoardPosition
        this.x = x;
        this.y = y;
     }
+
+    public static bool operator == (BoardPosition c1, BoardPosition c2)
+    {
+        return c1.x == c2.x && c1.y == c2.y;
+    }
+
+    public static bool operator != (BoardPosition c1, BoardPosition c2)
+    {
+        return c1.x != c2.x || c1.y != c2.y;
+    }
 }

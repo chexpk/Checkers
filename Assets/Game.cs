@@ -16,12 +16,11 @@ public class Game : MonoBehaviour
     public string playerSideColor  = "white";
     public Board board;
     public bool isCheckerSelected = false;
+    public UnityEventGame playerMoveEvent;
 
-    // private int checkerX;
-    // private int checkerY;
     private BoardPosition checkerBoardPosition;
 
-    public UnityEventGame playerMoveEvent;
+
 
     // BoardPosition boardPosition;
     public void OnSquareClick(BoardPosition boardPosition)
@@ -31,7 +30,7 @@ public class Game : MonoBehaviour
 
         if (HasCheckerAt(boardPosition) && IsCheckerIsSameColorOfPlayer(boardPosition))
         {
-            SelectChecker(boardPosition);
+            TrySelectChecker(boardPosition);
         }
         else
         {
@@ -40,6 +39,15 @@ public class Game : MonoBehaviour
                 TryMove(boardPosition);
             }
             isCheckerSelected = false;
+        }
+    }
+
+    void TrySelectChecker(BoardPosition boardPosition)
+    {
+        var possibleMoves = PossibleMoves(boardPosition);
+        if (possibleMoves.Count != 0)
+        {
+            SelectChecker(boardPosition);
         }
     }
 
@@ -59,7 +67,7 @@ public class Game : MonoBehaviour
         BoardPosition to = new BoardPosition(toBoardPosition.x, toBoardPosition.y);
         foreach (BoardPosition possiblePosition in possibleMoves)
         {
-            if (to.x == possiblePosition.x && to.y == possiblePosition.y)
+            if (to == possiblePosition)
             {
                 return true;
             }
