@@ -22,10 +22,10 @@ public class SquareScript : MonoBehaviour
         // ConverToChessBoardPosition();
     }
 
-    public Vector2 GetBoardPosition ()
+    public BoardPosition GetBoardPosition ()
     {
         // Debug.Log(boardPosition);
-        return new Vector2(x, y);
+        return new BoardPosition(x, y);
     }
 
     public Vector3 GetPosition()

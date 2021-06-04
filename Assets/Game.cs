@@ -17,51 +17,49 @@ public class Game : MonoBehaviour
     public Board board;
     public bool isCheckerSelected = false;
 
-    private int checkerX;
-    private int checkerY;
+    // private int checkerX;
+    // private int checkerY;
+    private BoardPosition checkerBoardPosition;
 
     public UnityEventGame playerMoveEvent;
 
     // BoardPosition boardPosition;
-    public void OnSquareClick(int x, int y)
+    public void OnSquareClick(BoardPosition boardPosition)
     {
-        //тест
-        TestCreatBoardPosition();
-
         board.UnHighlightAllCheckers();
         board.UnHighlightAllSquares();
 
-        if (HasCheckerAt(x, y) && IsCheckerIsSameColorOfPlayer(x, y))
+        if (HasCheckerAt(boardPosition) && IsCheckerIsSameColorOfPlayer(boardPosition))
         {
-            SelectChecker(x, y);
+            SelectChecker(boardPosition);
         }
         else
         {
             if (isCheckerSelected)
             {
-                TryMove(x, y);
+                TryMove(boardPosition);
             }
             isCheckerSelected = false;
         }
     }
 
-    void TryMove(int toX, int toY)
+    void TryMove(BoardPosition toBoardPosition)
     {
-        var possibleMoves = PossibleMoves(checkerX, checkerY);
-        if (CheckMove(toX, toY, possibleMoves))
+        var possibleMoves = PossibleMoves(checkerBoardPosition);
+        if (CheckMove(toBoardPosition, possibleMoves))
         {
-            board.MoveChecker(checkerX, checkerY, toX, toY);
+            board.MoveChecker(checkerBoardPosition, toBoardPosition);
             ChangePlayer();
             playerMoveEvent.Invoke(playerSideColor);
         }
     }
 
-    bool CheckMove(int toX, int toY, List<Vector2Int> possibleMoves)
+    bool CheckMove(BoardPosition toBoardPosition, List<BoardPosition> possibleMoves)
     {
-        Vector2Int to = new Vector2Int(toX, toY);
-        foreach (Vector2Int possiblePosition in possibleMoves)
+        BoardPosition to = new BoardPosition(toBoardPosition.x, toBoardPosition.y);
+        foreach (BoardPosition possiblePosition in possibleMoves)
         {
-            if (to == possiblePosition)
+            if (to.x == possiblePosition.x && to.y == possiblePosition.y)
             {
                 return true;
             }
@@ -70,69 +68,67 @@ public class Game : MonoBehaviour
         return false;
     }
 
-    void SelectChecker(int x, int y)
+    void SelectChecker(BoardPosition boardPosition)
     {
-        var possibleMoves = PossibleMoves(x, y);
+        var possibleMoves = PossibleMoves(boardPosition);
         HighlightSquares(possibleMoves);
-        board.HighlightChecker(x, y);
+        board.HighlightChecker(boardPosition);
         isCheckerSelected = true;
-        checkerX = x;
-        checkerY = y;
+        checkerBoardPosition = boardPosition;
     }
 
-    void HighlightSquares(List<Vector2Int> squares)
+    void HighlightSquares(List<BoardPosition> squares)
     {
-        foreach (Vector2Int square in squares)
+        foreach (BoardPosition square in squares)
         {
-            board.HighlightSquare(square.x, square.y);
+            board.HighlightSquare(square);
         }
     }
 
-    List<Vector2Int> PossibleMoves(int x, int y)
+    List<BoardPosition> PossibleMoves(BoardPosition boardPosition)
     {
-        var result = AllMoves(x, y);
+        var result = AllMoves(boardPosition);
         var enemy = GetNearEnemy(result);
-        // var nearEnemy = AllMovesNearEnemy(enemy);
-        var possibleChop = PossibleChop(x, y, enemy);
+        var possibleChop = PossibleChop(boardPosition, enemy);
         result = MovesWithoutCheckers(result);
-        result = MovesForvad(x, y, result);
+        result = MovesForvad(boardPosition, result);
         result.AddRange(possibleChop);
         return result;
     }
 
-    List<Vector2Int> AllMoves(int x, int y)
+    List<BoardPosition> AllMoves(BoardPosition boardPosition)
     {
-        List<Vector2Int> result = new List<Vector2Int>();
-        if (x + 1 < 8 && y + 1 < 8)
+        List<BoardPosition> result = new List<BoardPosition>();
+        if (boardPosition.x + 1 < 8 && boardPosition.y + 1 < 8)
         {
-            result.Add(new Vector2Int(x + 1, y + 1));
+            result.Add(new BoardPosition(boardPosition.x + 1, boardPosition.y + 1));
         }
 
-        if (x - 1 > -1 && y - 1 > -1)
+        if (boardPosition.x - 1 > -1 && boardPosition.y - 1 > -1)
         {
-            result.Add(new Vector2Int(x - 1, y - 1));
+            result.Add(new BoardPosition(boardPosition.x - 1, boardPosition.y - 1));
         }
 
-        if (x + 1 < 8 && y - 1 > -1)
+        if (boardPosition.x + 1 < 8 && boardPosition.y - 1 > -1)
         {
-            result.Add(new Vector2Int(x + 1, y - 1));
+            result.Add(new BoardPosition(boardPosition.x + 1, boardPosition.y - 1));
         }
 
-        if (x - 1 > -1 && y + 1 < 8)
+        if (boardPosition.x - 1 > -1 && boardPosition.y + 1 < 8)
         {
-            result.Add(new Vector2Int(x - 1, y + 1));
+            result.Add(new BoardPosition(boardPosition.x - 1, boardPosition.y + 1));
         }
 
         return result;
     }
 
-    List<Vector2Int> MovesWithoutCheckers(List<Vector2Int> moves)
+    List<BoardPosition> MovesWithoutCheckers(List<BoardPosition> moves)
     {
-        List<Vector2Int> result = new List<Vector2Int>();
+        List<BoardPosition> result = new List<BoardPosition>();
 
-        foreach (Vector2Int move in moves)
+        foreach (BoardPosition move in moves)
         {
-            if (!HasCheckerAt(move.x, move.y))
+            if (!HasCheckerAt(move))
             {
                 result.Add(move);
             }
@@ -140,13 +136,13 @@ public class Game : MonoBehaviour
         return result;
     }
 
-    List<Vector2Int> MovesForvad(int x, int y, List<Vector2Int> moves)
+    List<BoardPosition> MovesForvad(BoardPosition boardPosition, List<BoardPosition> moves)
     {
-        List<Vector2Int> result = new List<Vector2Int>();
+        List<BoardPosition> result = new List<BoardPosition>();
 
-        foreach (Vector2Int move in moves)
+        foreach (BoardPosition move in moves)
         {
-            if (CheckIsForwardMove(x, y, move.y))
+            if (CheckIsForwardMove(boardPosition, move))
             {
                 result.Add(move);
             }
@@ -154,12 +150,12 @@ public class Game : MonoBehaviour
         return result;
     }
 
-    bool CheckIsForwardMove(int x, int y, int toY)
+    bool CheckIsForwardMove(BoardPosition boardPosition, BoardPosition toBoardPosition)
     {
         bool result = false;
-        if (GetCheckerColor(x, y) == "white")
+        if (GetCheckerColor(boardPosition) == "white")
         {
-            if (toY > y)
+            if (toBoardPosition.y > boardPosition.y)
             {
                 result = true;
             }
@@ -168,9 +164,9 @@ public class Game : MonoBehaviour
                 result = false;
             }
         }
-        if (GetCheckerColor(x, y) == "black")
+        if (GetCheckerColor(boardPosition) == "black")
         {
-            if (toY < y)
+            if (toBoardPosition.y < boardPosition.y)
             {
                 result = true;
             }
@@ -183,15 +179,15 @@ public class Game : MonoBehaviour
         return result;
     }
 
-    bool HasCheckerAt(int x, int y)
+    bool HasCheckerAt(BoardPosition boardPosition)
     {
-        return board.HasCheckerAt(x, y);
+        return board.HasCheckerAt(boardPosition.x, boardPosition.y);
     }
 
-    bool IsCheckerIsSameColorOfPlayer(int x, int y)
+    bool IsCheckerIsSameColorOfPlayer(BoardPosition boardPosition)
     {
         bool result;
-        if (GetCheckerColor(x, y) == playerSideColor)
+        if (GetCheckerColor(boardPosition) == playerSideColor)
         {
             result = true;
         }
@@ -215,19 +211,19 @@ public class Game : MonoBehaviour
         }
     }
 
-    string GetCheckerColor(int x, int y)
+    string GetCheckerColor(BoardPosition boardPosition)
     {
-        return board.GetCheckerColor(x, y);
+        return board.GetCheckerColor(boardPosition);
     }
 
-    List<Vector2Int> GetNearEnemy(List<Vector2Int> moves)
+    List<BoardPosition> GetNearEnemy(List<BoardPosition> moves)
     {
-        List<Vector2Int> result = new List<Vector2Int>();
-        foreach (Vector2Int enemy in moves)
+        List<BoardPosition> result = new List<BoardPosition>();
+        foreach (BoardPosition enemy in moves)
         {
-            if (HasCheckerAt(enemy.x, enemy.y))
+            if (HasCheckerAt(enemy))
             {
-                if (!IsCheckerIsSameColorOfPlayer(enemy.x, enemy.y))
+                if (!IsCheckerIsSameColorOfPlayer(enemy))
                 {
                     result.Add(enemy);
                 }
@@ -236,28 +232,18 @@ public class Game : MonoBehaviour
         return result;
     }
 
-    List<Vector2Int> AllMovesNearEnemy(List<Vector2Int> enemies)
+    List<BoardPosition> PossibleChop(BoardPosition boardPosition, List<BoardPosition> enemies)
     {
-        List<Vector2Int> result = new List<Vector2Int>();
-        foreach (Vector2Int move in enemies)
-        {
-            result.AddRange(AllMoves(move.x, move.y));
-        }
-        return result;
-    }
+        List<BoardPosition> result = new List<BoardPosition>();
 
-    List<Vector2Int> PossibleChop(int x, int y, List<Vector2Int> enemies)
-    {
-        List<Vector2Int> result = new List<Vector2Int>();
-
-        foreach (Vector2Int enemy in enemies)
+        foreach (BoardPosition enemy in enemies)
         {
-            var moves = AllMoves(enemy.x, enemy.y);
+            var moves = AllMoves(enemy);
             var movesWithoutCheckersNearEnemy = MovesWithoutCheckers(moves);
 
-            foreach (Vector2Int move in movesWithoutCheckersNearEnemy)
+            foreach (BoardPosition move in movesWithoutCheckersNearEnemy)
             {
-                if (IsOnLineToChop(x, y, enemy.x, enemy.y, move.x, move.y))
+                if (IsOnLineToChop(boardPosition, enemy, move))
                 {
                     result.Add(move);
                 }
@@ -267,12 +253,12 @@ public class Game : MonoBehaviour
         return result;
     }
 
-    bool IsOnLineToChop(int x, int y, int enemyX, int enemyY, int moveX, int moveY)
+    bool IsOnLineToChop(BoardPosition boardPosition, BoardPosition enemyBoardPosition, BoardPosition moveBoardPosition)
     {
-        if (enemyX < x && moveX < enemyX && y != moveY)
+        if (enemyBoardPosition.x < boardPosition.x && moveBoardPosition.x < enemyBoardPosition.x && boardPosition.y != moveBoardPosition.y)
         {
             return true;
-        } else if (x < enemyX && enemyX < moveX && y != moveY)
+        } else if (boardPosition.x < enemyBoardPosition.x && enemyBoardPosition.x < moveBoardPosition.x && boardPosition.y != moveBoardPosition.y)
         {
             return true;
         }
@@ -280,10 +266,5 @@ public class Game : MonoBehaviour
         {
             return false;
         }
-    }
-
-    void TestCreatBoardPosition()
-    {
-        BoardPosition test = new BoardPosition(1, 2);
     }
 }

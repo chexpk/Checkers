@@ -27,10 +27,10 @@ public class UIContent : MonoBehaviour
         
     }
 
-    void RecordMove(int fromX, int fromY, int toX, int toY)
+    void RecordMove(BoardPosition fromBoardPosition, BoardPosition toBoardPosition)
     {
         numberOfMoves++;
-        NewMove = fromX.ToString() + ":" + fromY.ToString() + " -- " + toX.ToString() + ":" + toY.ToString();
+        NewMove = fromBoardPosition.x.ToString() + ":" + fromBoardPosition.y.ToString() + " -- " + toBoardPosition.x.ToString() + ":" + toBoardPosition.y.ToString();
         FullLog =  FullLog + "\n" + numberOfMoves.ToString() +")" + " " + NewMove;
         logsWindow.text = FullLog;
     }

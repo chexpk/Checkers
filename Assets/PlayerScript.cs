@@ -30,9 +30,9 @@ public class PlayerScript : MonoBehaviour
         {
             SquareScript squareScript = hit.transform.gameObject.GetComponent<SquareScript>();
             var boardPosition =  squareScript.GetBoardPosition();
-            int x = (int) boardPosition.x;
-            int y = (int) boardPosition.y;
-            game.OnSquareClick(x, y);
+            // int x = (int) boardPosition.x;
+            // int y = (int) boardPosition.y;
+            game.OnSquareClick(boardPosition);
         }
     }
 

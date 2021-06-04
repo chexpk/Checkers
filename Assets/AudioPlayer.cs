@@ -11,7 +11,6 @@ public class AudioPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(board.checkerMoveEvent);
         board.checkerMoveEvent.AddListener(PlaySound);
     }
 
@@ -21,7 +20,7 @@ public class AudioPlayer : MonoBehaviour
         
     }
 
-    void PlaySound(int fromX, int fromY, int toX, int toY )
+    void PlaySound(BoardPosition fromBoardPosition, BoardPosition toBoardPosition)
     {
         audioPlayer.clip = sound;
         audioPlayer.Play();
