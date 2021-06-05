@@ -14,6 +14,7 @@ public class Board : MonoBehaviour
 {
     public GameObject[,] checkers = new GameObject[8, 8];
     public GameObject[,] squares = new GameObject[8, 8];
+    public GameObject checker;
     // public UnityEvent checkerMoveEvent = new UnityEvent();
     public Checker checkerScript;
 
@@ -61,6 +62,39 @@ public class Board : MonoBehaviour
     public string GetCheckerColor(BoardPosition boardPosition)
     {
         return checkers[boardPosition.x, boardPosition.y].GetComponent<Checker>().GetColor();
+    }
+
+    public void CreateWhiteChecker(BoardPosition boardPosition)
+    {
+        var col = boardPosition.x;
+        var row = boardPosition.y;
+        var position = GetSquarePosition(col, row);
+        checkers[col, row] = CreateChecker(position, "white");
+        var checker = checkers[col, row].GetComponent<Checker>();
+        checker.SetBoardPosition(col, row);
+    }
+
+     public void CreateBlackChecker(BoardPosition boardPosition)
+    {
+        var col = boardPosition.x;
+        var row = boardPosition.y;
+        var position = GetSquarePosition(col, row);
+        checkers[col, row] = CreateChecker(position, "black");
+        var checker = checkers[col, row].GetComponent<Checker>();
+        checker.SetBoardPosition(col, row);
+    }
+
+    Vector3 GetSquarePosition(int x, int y)
+    {
+        SquareScript squareScript = squares[x, y].transform.gameObject.GetComponent<SquareScript>();
+        return squareScript.GetPosition();
+    }
+
+    GameObject CreateChecker(Vector3 position, string color)
+    {
+        var result = Instantiate(checker, position, Quaternion.identity);
+        result.GetComponent<Checker>().SetColor(color);
+        return result;
     }
 
     // deprecated
@@ -113,5 +147,11 @@ public class Board : MonoBehaviour
                 squares[x, y].GetComponent<SquareScript>().UnHighlight();
             }
         }
+    }
+
+    public void ResetToPositionCheckers(PositionOfCheckers positionOfCheckers)
+    {
+        var checkersCreator = new CheckersCreator(positionOfCheckers, this);
+        checkersCreator.Call();
     }
 }

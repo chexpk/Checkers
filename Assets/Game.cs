@@ -13,15 +13,21 @@ public class UnityEventGame : UnityEvent<string>
 
 public class Game : MonoBehaviour
 {
+    public PositionOfCheckers positionOfCheckers;
+
     public bool isGameRun = false;
     public string playerSideColor  = "white";
     public Board board;
-    public bool isCheckerSelected = false;
     public UnityEventGame playerMoveEvent;
 
+    public bool isCheckerSelected = false;
     private BoardPosition checkerBoardPosition;
 
-    // BoardPosition boardPosition;
+    private void Start()
+    {
+        board.ResetToPositionCheckers(positionOfCheckers);
+    }
+
     public void OnSquareClick(BoardPosition boardPosition)
     {
         board.UnHighlightAllCheckers();
@@ -29,7 +35,7 @@ public class Game : MonoBehaviour
 
         if (HasCheckerAt(boardPosition) && IsCheckerIsSameColorOfPlayer(boardPosition))
         {
-            TrySelectChecker(boardPosition);
+            SelectChecker(boardPosition);
         }
         else
         {
@@ -38,15 +44,6 @@ public class Game : MonoBehaviour
                 TryMove(boardPosition);
             }
             isCheckerSelected = false;
-        }
-    }
-
-    void TrySelectChecker(BoardPosition boardPosition)
-    {
-        var possibleMoves = PossibleMoves(boardPosition);
-        if (possibleMoves.Count != 0)
-        {
-            SelectChecker(boardPosition);
         }
     }
 

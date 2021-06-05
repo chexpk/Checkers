@@ -478,6 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73ae89bb541a474f96f420436bd2c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checker: {fileID: 3439634192204143419, guid: d89a883095b024ceab203af99ec7cdab, type: 3}
   checkerScript: {fileID: 3439634192204143416, guid: d89a883095b024ceab203af99ec7cdab,
     type: 3}
   logOfMoves: {fileID: 1129191536}
@@ -1345,13 +1346,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4830c9de9e242a7bef1e9978f91ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  positionOfCheckers: {fileID: 11400000, guid: 688df348935ef423eb1e67fdf04b0607, type: 2}
   isGameRun: 0
   playerSideColor: white
   board: {fileID: 610816741}
-  isCheckerSelected: 0
   playerMoveEvent:
     m_PersistentCalls:
       m_Calls: []
+  isCheckerSelected: 0
 --- !u!4 &1350890611
 Transform:
   m_ObjectHideFlags: 0

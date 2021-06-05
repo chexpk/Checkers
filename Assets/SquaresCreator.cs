@@ -15,7 +15,7 @@ public class SquaresCreator : MonoBehaviour
     void Start()
     {
         AreaCreator();
-        CreateCheckers();
+        // CreateCheckers();
     }
 
     GameObject CreateSquere(Vector3 position)
