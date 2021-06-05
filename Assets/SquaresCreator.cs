@@ -95,6 +95,8 @@ public class SquaresCreator : MonoBehaviour
             {
                 var position = GetSquarePosition(col, row);
                 board.checkers[col, row] = CreateChecker(position, color);
+                var checker = board.checkers[col, row].GetComponent<Checker>();
+                checker.SetBoardPosition(col, row);
                 shouldPlace = false;
             }
             else

@@ -22,22 +22,72 @@ public class Board : MonoBehaviour
 
     public UnityEvent checkerMoveEvent;
 
-    private void Start()
+    // WIP
+    public Checker GetCheckerAt(BoardPosition position)
     {
-        // if (checkerMoveEvent == null)
-        //     checkerMoveEvent = new UnityEvent();
-        // Invoke("TestMove", 1f);
-        // Invoke("TestMove2", 4f);
+        var cheackerGO = checkers[position.x, position.y];
+        if (cheackerGO == null) return null;
+
+        return cheackerGO.GetComponent<Checker>();
     }
 
+    // WIP
+    public void MoveChecker(Checker checker, BoardPosition toBoardPosition)
+    {
+        if (checker == null) return;
+        if (checkers[toBoardPosition.x, toBoardPosition.y] != null) return;
+
+        // Физ координаты
+        var square = squares[toBoardPosition.x, toBoardPosition.y].GetComponent<SquareScript>();
+        var position = square.GetPosition();
+        checker.MoveWithAnimatedTo(position.x, position.z);
+
+        // Коорд на доске
+        var fromBoardPosition = checker.GetBoardPosition();
+        checkers[toBoardPosition.x, toBoardPosition.y] = checkers[fromBoardPosition.x, fromBoardPosition.y];
+        checkers[fromBoardPosition.x, fromBoardPosition.y] = null;
+        checker.SetBoardPosition(toBoardPosition.x, toBoardPosition.y); // why x,y
+
+        checkerMoveEvent.Invoke(fromBoardPosition, toBoardPosition);
+    }
+
+    // deprecated
     public bool HasCheckerAt(int x, int y)
     {
         return checkers[x, y] != null;
     }
 
+    // deprecated
+    public string GetCheckerColor(BoardPosition boardPosition)
+    {
+        return checkers[boardPosition.x, boardPosition.y].GetComponent<Checker>().GetColor();
+    }
+
+    // deprecated
+    public void MoveChecker(BoardPosition fromBoardPosition, BoardPosition toBoardPosition)
+    {
+        var checker = checkers[fromBoardPosition.x, fromBoardPosition.y];
+
+        if (checker == null) return;
+        if (checkers[toBoardPosition.x, toBoardPosition.y] != null) return;
+
+        var square = squares[toBoardPosition.x, toBoardPosition.y].GetComponent<SquareScript>();
+        var position = square.GetPosition();
+        Checker checkerScript = checker.GetComponent<Checker>();
+        checkerScript.MoveWithAnimatedTo(position.x, position.z);
+        checkers[fromBoardPosition.x, fromBoardPosition.y] = null;
+        checkers[toBoardPosition.x, toBoardPosition.y] = checker;
+        checkerMoveEvent.Invoke(fromBoardPosition, toBoardPosition);
+    }
+
     public void HighlightChecker(BoardPosition boardPosition)
     {
         checkers[boardPosition.x, boardPosition.y].GetComponent<Checker>().Highlight();
+    }
+
+    public void HighlightSquare(BoardPosition boardPosition)
+    {
+        squares[boardPosition.x, boardPosition.y].GetComponent<SquareScript>().Highlight();
     }
 
     public void UnHighlightAllCheckers()
@@ -64,44 +114,4 @@ public class Board : MonoBehaviour
             }
         }
     }
-
-    public void HighlightSquare(BoardPosition boardPosition)
-    {
-        squares[boardPosition.x, boardPosition.y].GetComponent<SquareScript>().Highlight();
-    }
-
-    public void MoveChecker(BoardPosition fromBoardPosition, BoardPosition toBoardPosition)
-    {
-        var checker = checkers[fromBoardPosition.x, fromBoardPosition.y];
-
-        if (checker == null) return;
-        if (checkers[toBoardPosition.x, toBoardPosition.y] != null) return;
-
-        var square = squares[toBoardPosition.x, toBoardPosition.y].GetComponent<SquareScript>();
-        var position = square.GetPosition();
-        Checker checkerScript = checker.GetComponent<Checker>();
-        checkerScript.MoveWithAnimatedTo(position.x, position.z);
-        checkers[fromBoardPosition.x, fromBoardPosition.y] = null;
-        checkers[toBoardPosition.x, toBoardPosition.y] = checker;
-        checkerMoveEvent.Invoke(fromBoardPosition, toBoardPosition);
-    }
-
-
-    public string GetCheckerColor(BoardPosition boardPosition)
-    {
-        return checkers[boardPosition.x, boardPosition.y].GetComponent<Checker>().GetColor();
-    }
-
-    void TestMove()
-    {
-        // MoveChecker(2, 2, 3, 3);
-    }
-
-    void TestMove2()
-    {
-        // MoveChecker(3, 3, 4, 4);
-        // MoveChecker(4, 4, 5, 5);
-        // HighlightSquare(7, 7);
-    }
-
 }

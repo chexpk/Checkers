@@ -13,6 +13,20 @@ public class Checker : MonoBehaviour
 
     Animation anim;
 
+    int x;
+    int y;
+
+    public void SetBoardPosition(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    public BoardPosition GetBoardPosition ()
+    {
+        return new BoardPosition(x, y);
+    }
+
     void Start()
     {
         RenderColor();
