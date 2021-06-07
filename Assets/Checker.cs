@@ -16,10 +16,10 @@ public class Checker : MonoBehaviour
     int x;
     int y;
 
-    public void SetBoardPosition(int x, int y)
+    public void SetBoardPosition(BoardPosition boardPosition)
     {
-        this.x = x;
-        this.y = y;
+        this.x = boardPosition.x;
+        this.y = boardPosition.y;
     }
 
     public BoardPosition GetBoardPosition ()

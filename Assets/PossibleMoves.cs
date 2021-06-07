@@ -115,7 +115,7 @@ public class PossibleMoves
 
     bool HasCheckerAt(BoardPosition boardPosition)
     {
-        return board.HasCheckerAt(boardPosition.x, boardPosition.y);
+        return board.GetCheckerAt(boardPosition) != null;
     }
 
     bool IsCheckerIsSameColorOfPlayer(BoardPosition boardPosition, string playerSideColor)
@@ -149,7 +149,7 @@ public class PossibleMoves
 
     string GetCheckerColor(BoardPosition boardPosition)
     {
-        return board.GetCheckerColor(boardPosition);
+        return board.GetCheckerAt(boardPosition).GetColor();
     }
 
     bool CheckIsForwardMove(BoardPosition boardPosition, BoardPosition toBoardPosition)

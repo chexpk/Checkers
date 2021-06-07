@@ -22,6 +22,7 @@ public class Game : MonoBehaviour
 
     public bool isCheckerSelected = false;
     private BoardPosition checkerBoardPosition;
+    private Checker selectedChecker;
 
     private void Start()
     {
@@ -33,8 +34,9 @@ public class Game : MonoBehaviour
         board.UnHighlightAllCheckers();
         board.UnHighlightAllSquares();
 
-        if (HasCheckerAt(boardPosition) && IsCheckerIsSameColorOfPlayer(boardPosition))
+        if (GetCheckerAt(boardPosition) != null && IsCheckerIsSameColorOfPlayer(GetCheckerAt(boardPosition)))
         {
+            selectedChecker = GetCheckerAt(boardPosition);
             SelectChecker(boardPosition);
         }
         else
@@ -44,6 +46,7 @@ public class Game : MonoBehaviour
                 TryMove(boardPosition);
             }
             isCheckerSelected = false;
+            selectedChecker = null;
         }
     }
 
@@ -52,7 +55,7 @@ public class Game : MonoBehaviour
         var possibleMoves = PossibleMoves(checkerBoardPosition);
         if (CheckMove(toBoardPosition, possibleMoves))
         {
-            board.MoveChecker(checkerBoardPosition, toBoardPosition);
+            board.MoveChecker(selectedChecker, toBoardPosition);
             ChangePlayer();
             playerMoveEvent.Invoke(playerSideColor);
         }
@@ -68,7 +71,6 @@ public class Game : MonoBehaviour
                 return true;
             }
         }
-
         return false;
     }
 
@@ -76,7 +78,7 @@ public class Game : MonoBehaviour
     {
         var possibleMoves = PossibleMoves(boardPosition);
         HighlightSquares(possibleMoves);
-        board.HighlightChecker(boardPosition);
+        board.HighlightChecker(selectedChecker);
         isCheckerSelected = true;
         checkerBoardPosition = boardPosition;
     }
@@ -95,15 +97,15 @@ public class Game : MonoBehaviour
         return possibleMoves.Call(boardPosition, playerSideColor);
     }
 
-    bool HasCheckerAt(BoardPosition boardPosition)
-    {
-        return board.HasCheckerAt(boardPosition.x, boardPosition.y);
-    }
+    // bool HasCheckerAt(BoardPosition boardPosition)
+    // {
+    //     return board.HasCheckerAt(boardPosition.x, boardPosition.y);
+    // }
 
-    bool IsCheckerIsSameColorOfPlayer(BoardPosition boardPosition)
+    bool IsCheckerIsSameColorOfPlayer(Checker checker)
     {
         bool result;
-        if (GetCheckerColor(boardPosition) == playerSideColor)
+        if (GetCheckerColor(checker) == playerSideColor)
         {
             result = true;
         }
@@ -127,8 +129,13 @@ public class Game : MonoBehaviour
         }
     }
 
-    string GetCheckerColor(BoardPosition boardPosition)
+    string GetCheckerColor(Checker checker)
     {
-        return board.GetCheckerColor(boardPosition);
+        return checker.GetColor();
+    }
+
+    Checker GetCheckerAt (BoardPosition boardPosition)
+    {
+        return board.GetCheckerAt(boardPosition);
     }
 }

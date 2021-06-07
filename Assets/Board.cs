@@ -14,7 +14,7 @@ public class Board : MonoBehaviour
 {
     public GameObject[,] checkers = new GameObject[8, 8];
     public GameObject[,] squares = new GameObject[8, 8];
-    public GameObject checker;
+    public GameObject checkerPref;
     // public UnityEvent checkerMoveEvent = new UnityEvent();
     public Checker checkerScript;
 
@@ -47,22 +47,22 @@ public class Board : MonoBehaviour
         var fromBoardPosition = checker.GetBoardPosition();
         checkers[toBoardPosition.x, toBoardPosition.y] = checkers[fromBoardPosition.x, fromBoardPosition.y];
         checkers[fromBoardPosition.x, fromBoardPosition.y] = null;
-        checker.SetBoardPosition(toBoardPosition.x, toBoardPosition.y); // why x,y
+        checker.SetBoardPosition(toBoardPosition);
 
         checkerMoveEvent.Invoke(fromBoardPosition, toBoardPosition);
     }
 
-    // deprecated
-    public bool HasCheckerAt(int x, int y)
-    {
-        return checkers[x, y] != null;
-    }
+    // // deprecated
+    // public bool HasCheckerAt(int x, int y)
+    // {
+    //     return checkers[x, y] != null;
+    // }
 
     // deprecated
-    public string GetCheckerColor(BoardPosition boardPosition)
-    {
-        return checkers[boardPosition.x, boardPosition.y].GetComponent<Checker>().GetColor();
-    }
+    // public string GetCheckerColor(BoardPosition boardPosition)
+    // {
+    //     return checkers[boardPosition.x, boardPosition.y].GetComponent<Checker>().GetColor();
+    // }
 
     public void CreateWhiteChecker(BoardPosition boardPosition)
     {
@@ -71,7 +71,7 @@ public class Board : MonoBehaviour
         var position = GetSquarePosition(col, row);
         checkers[col, row] = CreateChecker(position, "white");
         var checker = checkers[col, row].GetComponent<Checker>();
-        checker.SetBoardPosition(col, row);
+        checker.SetBoardPosition(boardPosition);
     }
 
      public void CreateBlackChecker(BoardPosition boardPosition)
@@ -81,7 +81,7 @@ public class Board : MonoBehaviour
         var position = GetSquarePosition(col, row);
         checkers[col, row] = CreateChecker(position, "black");
         var checker = checkers[col, row].GetComponent<Checker>();
-        checker.SetBoardPosition(col, row);
+        checker.SetBoardPosition(boardPosition);
     }
 
     Vector3 GetSquarePosition(int x, int y)
@@ -92,31 +92,31 @@ public class Board : MonoBehaviour
 
     GameObject CreateChecker(Vector3 position, string color)
     {
-        var result = Instantiate(checker, position, Quaternion.identity);
+        var result = Instantiate(checkerPref, position, Quaternion.identity);
         result.GetComponent<Checker>().SetColor(color);
         return result;
     }
 
     // deprecated
-    public void MoveChecker(BoardPosition fromBoardPosition, BoardPosition toBoardPosition)
+    // public void MoveChecker(BoardPosition fromBoardPosition, BoardPosition toBoardPosition)
+    // {
+    //     var checker = checkers[fromBoardPosition.x, fromBoardPosition.y];
+    //
+    //     if (checker == null) return;
+    //     if (checkers[toBoardPosition.x, toBoardPosition.y] != null) return;
+    //
+    //     var square = squares[toBoardPosition.x, toBoardPosition.y].GetComponent<SquareScript>();
+    //     var position = square.GetPosition();
+    //     Checker checkerScript = checker.GetComponent<Checker>();
+    //     checkerScript.MoveWithAnimatedTo(position.x, position.z);
+    //     checkers[fromBoardPosition.x, fromBoardPosition.y] = null;
+    //     checkers[toBoardPosition.x, toBoardPosition.y] = checker;
+    //     checkerMoveEvent.Invoke(fromBoardPosition, toBoardPosition);
+    // }
+
+    public void HighlightChecker(Checker checker)
     {
-        var checker = checkers[fromBoardPosition.x, fromBoardPosition.y];
-
-        if (checker == null) return;
-        if (checkers[toBoardPosition.x, toBoardPosition.y] != null) return;
-
-        var square = squares[toBoardPosition.x, toBoardPosition.y].GetComponent<SquareScript>();
-        var position = square.GetPosition();
-        Checker checkerScript = checker.GetComponent<Checker>();
-        checkerScript.MoveWithAnimatedTo(position.x, position.z);
-        checkers[fromBoardPosition.x, fromBoardPosition.y] = null;
-        checkers[toBoardPosition.x, toBoardPosition.y] = checker;
-        checkerMoveEvent.Invoke(fromBoardPosition, toBoardPosition);
-    }
-
-    public void HighlightChecker(BoardPosition boardPosition)
-    {
-        checkers[boardPosition.x, boardPosition.y].GetComponent<Checker>().Highlight();
+        checker.Highlight();
     }
 
     public void HighlightSquare(BoardPosition boardPosition)
