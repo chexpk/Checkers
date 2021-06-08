@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 public class PossibleMoves
 {
     private Board board;
+    Dictionary<Checker, BoardPosition> enemiesPosition = new Dictionary<Checker, BoardPosition>();
 
     public PossibleMoves(Board board)
     {
@@ -20,6 +21,11 @@ public class PossibleMoves
         result = MovesForvad(boardPosition, result);
         result.AddRange(possibleChop);
         return result;
+    }
+
+    public Dictionary<Checker, BoardPosition> GetEnemiesWithPositionOfChop()
+    {
+        return enemiesPosition;
     }
 
     List<BoardPosition> AllMoves(BoardPosition boardPosition)
@@ -77,12 +83,19 @@ public class PossibleMoves
             {
                 if (IsOnLineToChop(boardPosition, enemy, move))
                 {
+                    SaveEnemyWithPositionOfChop(enemy, move);
                     result.Add(move);
                 }
             }
 
         }
         return result;
+    }
+
+    Dictionary<Checker, BoardPosition> SaveEnemyWithPositionOfChop(BoardPosition enemyPosition, BoardPosition chopPosition)
+    {
+        enemiesPosition.Add(board.GetCheckerAt(enemyPosition),chopPosition);
+        return enemiesPosition;
     }
 
     List<BoardPosition> MovesWithoutCheckers(List<BoardPosition> moves)
@@ -134,6 +147,7 @@ public class PossibleMoves
 
     bool IsOnLineToChop(BoardPosition boardPosition, BoardPosition enemyBoardPosition, BoardPosition moveBoardPosition)
     {
+
         if (enemyBoardPosition.x < boardPosition.x && moveBoardPosition.x < enemyBoardPosition.x && boardPosition.y != moveBoardPosition.y)
         {
             return true;

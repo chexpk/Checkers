@@ -16,6 +16,11 @@ public class Checker : MonoBehaviour
     int x;
     int y;
 
+    void Start()
+    {
+        RenderColor();
+    }
+
     public void SetBoardPosition(BoardPosition boardPosition)
     {
         this.x = boardPosition.x;
@@ -25,11 +30,6 @@ public class Checker : MonoBehaviour
     public BoardPosition GetBoardPosition ()
     {
         return new BoardPosition(x, y);
-    }
-
-    void Start()
-    {
-        RenderColor();
     }
 
     public bool isBlack()
@@ -158,5 +158,12 @@ public class Checker : MonoBehaviour
         {
             RenderColor();
         }
+    }
+
+    public void Delete()
+    {
+        var GO = this.gameObject;
+        Debug.Log(GO);
+        Destroy (GO);
     }
 }

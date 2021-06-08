@@ -23,6 +23,7 @@ public class Game : MonoBehaviour
     public bool isCheckerSelected = false;
     private BoardPosition checkerBoardPosition;
     private Checker selectedChecker;
+    Dictionary<Checker, BoardPosition> enemiesPosition;
 
     private void Start()
     {
@@ -56,8 +57,21 @@ public class Game : MonoBehaviour
         if (CheckMove(toBoardPosition, possibleMoves))
         {
             board.MoveChecker(selectedChecker, toBoardPosition);
+            TryChopEnemy(toBoardPosition);
             ChangePlayer();
             playerMoveEvent.Invoke(playerSideColor);
+        }
+    }
+
+    void TryChopEnemy(BoardPosition chopBoardPosition)
+    {
+        // chop enemy
+        foreach (var enemy in enemiesPosition)
+        {
+            if (enemy.Value == chopBoardPosition)
+            {
+                board.DeleteChecler(enemy.Key);
+            }
         }
     }
 
@@ -94,13 +108,9 @@ public class Game : MonoBehaviour
     List<BoardPosition> PossibleMoves(BoardPosition boardPosition)
     {
         PossibleMoves possibleMoves = new PossibleMoves(board);
+        enemiesPosition = possibleMoves.GetEnemiesWithPositionOfChop(); // вытвщить
         return possibleMoves.Call(boardPosition, playerSideColor);
     }
-
-    // bool HasCheckerAt(BoardPosition boardPosition)
-    // {
-    //     return board.HasCheckerAt(boardPosition.x, boardPosition.y);
-    // }
 
     bool IsCheckerIsSameColorOfPlayer(Checker checker)
     {
