@@ -7,7 +7,6 @@ public class SquaresCreator : MonoBehaviour
 {
     public GameObject squarePrefab;
     public GameObject checker;
-
     public Board board;
 
     const float boardSize = 8;
@@ -15,7 +14,6 @@ public class SquaresCreator : MonoBehaviour
     void Start()
     {
         AreaCreator();
-        // CreateCheckers();
     }
 
     GameObject CreateSquere(Vector3 position)
@@ -28,9 +26,7 @@ public class SquaresCreator : MonoBehaviour
         float width = transform.lossyScale.x;
         float height = transform.lossyScale.y;
         squereGO.transform.localScale = new Vector3(width / boardSize / width, height / boardSize / height, 1f);
-
         squereGO.transform.localPosition = position;
-
         return result;
     }
 
@@ -38,23 +34,18 @@ public class SquaresCreator : MonoBehaviour
     {
         float widthArea = transform.lossyScale.x;
         float heightArea = transform.lossyScale.y;
-
         float widthSquare = widthArea / boardSize / widthArea;
         float heightSquare = heightArea / boardSize / heightArea;
-
         float z = 0f;
 
         for (int j = 0; j < boardSize; j++)
         {
             float y = -heightSquare * boardSize / 2 + heightSquare / 2 + heightSquare * j;
-
             for (int i = 0; i < boardSize; i++)
             {
                 float x = -widthSquare * boardSize / 2 + widthSquare / 2 + widthSquare * i;
-
                 Vector3 positionSc = new Vector3(x, y, z);
                 board.squares[i, j] = CreateSquere(positionSc);
-
                 SquareScript squareScript = board.squares[i, j].transform.gameObject.GetComponent<SquareScript>();
                 squareScript.SetBoardPosition(i, j);
             }
@@ -88,7 +79,6 @@ public class SquaresCreator : MonoBehaviour
     void CreateCheckerRow(bool isFirstExist, int row, string color)
     {
         bool shouldPlace = isFirstExist;
-
         for (int col = 0; col < 8; col++)
         {
             if (shouldPlace)

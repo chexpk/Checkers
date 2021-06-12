@@ -19,11 +19,11 @@ public class Game : MonoBehaviour
     public string playerSideColor  = "white";
     public Board board;
     public UnityEventGame playerMoveEvent;
-
     public bool isCheckerSelected = false;
+
     private BoardPosition checkerBoardPosition;
     private Checker selectedChecker;
-    Dictionary<Checker, BoardPosition> enemiesPosition;
+    private Dictionary<Checker, BoardPosition> enemiesPosition;
 
     private void Start()
     {
@@ -65,7 +65,6 @@ public class Game : MonoBehaviour
 
     void TryChopEnemy(BoardPosition chopBoardPosition)
     {
-        // chop enemy
         foreach (var enemy in enemiesPosition)
         {
             if (enemy.Value == chopBoardPosition)
@@ -108,7 +107,7 @@ public class Game : MonoBehaviour
     List<BoardPosition> PossibleMoves(BoardPosition boardPosition)
     {
         PossibleMoves possibleMoves = new PossibleMoves(board);
-        enemiesPosition = possibleMoves.GetEnemiesWithPositionOfChop(); // вытвщить
+        enemiesPosition = possibleMoves.GetEnemiesWithPositionOfChop(); // вытащить
         return possibleMoves.Call(boardPosition, playerSideColor);
     }
 

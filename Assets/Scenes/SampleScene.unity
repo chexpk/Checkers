@@ -192,13 +192,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100277888}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e33e33bc029d84e02a73a10e374ba72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
   targetObject: {fileID: 1933757026}
+  game: {fileID: 1350890610}
   orbitSpeed: 100
 --- !u!1 &491155824
 GameObject:
@@ -478,7 +479,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73ae89bb541a474f96f420436bd2c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checker: {fileID: 3439634192204143419, guid: d89a883095b024ceab203af99ec7cdab, type: 3}
+  checkerPref: {fileID: 3439634192204143419, guid: d89a883095b024ceab203af99ec7cdab,
+    type: 3}
   checkerScript: {fileID: 3439634192204143416, guid: d89a883095b024ceab203af99ec7cdab,
     type: 3}
   logOfMoves: {fileID: 1129191536}
@@ -1346,7 +1348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4830c9de9e242a7bef1e9978f91ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOfCheckers: {fileID: 11400000, guid: 688df348935ef423eb1e67fdf04b0607, type: 2}
+  positionOfCheckers: {fileID: 11400000, guid: 8bec0fc9c602d46f79b22ef41a7f8edb, type: 2}
   isGameRun: 0
   playerSideColor: white
   board: {fileID: 610816741}

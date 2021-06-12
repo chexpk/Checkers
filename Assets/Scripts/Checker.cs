@@ -162,8 +162,7 @@ public class Checker : MonoBehaviour
 
     public void Delete()
     {
-        var GO = this.gameObject;
-        Debug.Log(GO);
-        Destroy (GO);
+        var go = this.gameObject;
+        Destroy (go);
     }
 }
