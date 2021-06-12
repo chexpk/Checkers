@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d25070faeb0e34730b74ade204bb8148, type: 2}
+  - {fileID: 2100000, guid: d80a03db5cb1b43018c46a6f3b439c45, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,5 +107,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b335dc625224891bdce34769f5d69e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightMaterial: {fileID: 2100000, guid: bde9ac0091bd54e848a5196c291a0957, type: 2}
-  nullMaterial: {fileID: 2100000, guid: d25070faeb0e34730b74ade204bb8148, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 9fec48229a59b40d68cd5dda75e3b74c, type: 2}
+  nullMaterial: {fileID: 2100000, guid: d80a03db5cb1b43018c46a6f3b439c45, type: 2}

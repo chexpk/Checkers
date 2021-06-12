@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 774581854322022919}
   - component: {fileID: 774581854320892103}
   m_Layer: 0
-  m_Name: checker
+  m_Name: checkerWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

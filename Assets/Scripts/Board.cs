@@ -15,8 +15,6 @@ public class Board : MonoBehaviour
     public GameObject[,] checkers = new GameObject[8, 8];
     public GameObject[,] squares = new GameObject[8, 8];
     public GameObject checkerPref;
-    public Checker checkerScript;
-    public UIContent logOfMoves;
     public UnityEvent checkerMoveEvent;
 
     public Checker GetCheckerAt(BoardPosition position)

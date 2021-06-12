@@ -32,11 +32,15 @@ public class Game : MonoBehaviour
 
     public void OnSquareClick(BoardPosition boardPosition)
     {
+        Debug.Log("adasd");
+        Debug.Log(boardPosition);
+
         board.UnHighlightAllCheckers();
         board.UnHighlightAllSquares();
 
         if (GetCheckerAt(boardPosition) != null && IsCheckerIsSameColorOfPlayer(GetCheckerAt(boardPosition)))
         {
+            Debug.Log("SEL");
             selectedChecker = GetCheckerAt(boardPosition);
             SelectChecker(boardPosition);
         }
@@ -90,6 +94,9 @@ public class Game : MonoBehaviour
     void SelectChecker(BoardPosition boardPosition)
     {
         var possibleMoves = PossibleMoves(boardPosition);
+
+        Debug.Log(possibleMoves.Count);
+
         HighlightSquares(possibleMoves);
         board.HighlightChecker(selectedChecker);
         isCheckerSelected = true;

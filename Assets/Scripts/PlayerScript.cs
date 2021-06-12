@@ -29,7 +29,7 @@ public class PlayerScript : MonoBehaviour
         if (RaycastMousePosition(out hit))
         {
             SquareScript squareScript = hit.transform.gameObject.GetComponent<SquareScript>();
-            var boardPosition =  squareScript.GetBoardPosition();
+            var boardPosition = squareScript.GetBoardPosition();
             // int x = (int) boardPosition.x;
             // int y = (int) boardPosition.y;
             game.OnSquareClick(boardPosition);

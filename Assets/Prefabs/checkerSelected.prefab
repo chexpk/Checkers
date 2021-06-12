@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4029680974923398766}
   - component: {fileID: 4029680974922267822}
   m_Layer: 0
-  m_Name: checkerRed
+  m_Name: checkerSelected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,8 +58,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bde9ac0091bd54e848a5196c291a0957, type: 2}
-  - {fileID: 2100000, guid: bde9ac0091bd54e848a5196c291a0957, type: 2}
+  - {fileID: 2100000, guid: 9fec48229a59b40d68cd5dda75e3b74c, type: 2}
+  - {fileID: 2100000, guid: 9fec48229a59b40d68cd5dda75e3b74c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
