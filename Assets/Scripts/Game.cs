@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,7 +16,6 @@ public class Game : MonoBehaviour
 {
     public PositionOfCheckers positionOfCheckers;
 
-    public bool isGameRun = false;
     public string playerSideColor  = "white";
     public Board board;
     public UnityEventGame playerMoveEvent;
@@ -28,19 +28,77 @@ public class Game : MonoBehaviour
     private void Start()
     {
         board.ResetToPositionCheckers(positionOfCheckers);
+        // GetFibonacci();
+        // GetRange();
+        // GetFilter();
+    }
+
+    void GetRange()
+    {
+        var range = Enumerable.Range(1, 10);
+        Display(range);
+
+        // MAP item -> item*
+        // var doubleRange = range.Select((item) =>
+        // {
+        //     return item * 2;
+        // });
+
+        var lol = 13;
+        range.Select((item, index) =>
+        {
+            return item * lol;
+        });
+
+
+        var doubleRange = range.Select(item => item * 2);
+
+        // (item, index) =>
+        // {
+        //     return item * index;
+        // }
+
+        // (item, index) => item * index;
+        // item => item * 2;
+        Display(doubleRange);
+    }
+
+    void GetFilter()
+    {
+        var quad = Enumerable.Range(1, 100).Where(x => x * x > 1000);
+        var array = Enumerable.Range(1, 100);
+        array.Any(x => x > 0);
+
+        Display(quad);
+    }
+
+    void Display(IEnumerable collection)
+    {
+        foreach (var item in collection)
+        {
+            Debug.Log(item);
+        }
+    }
+
+    void GetFibonacci()
+    {
+        int i = 0;
+        Fibonacci fibonacci = new Fibonacci();
+        foreach (var iteme in fibonacci)
+        {
+            i++;
+            Debug.Log(iteme);
+            if (i > 9) return;
+        }
     }
 
     public void OnSquareClick(BoardPosition boardPosition)
     {
-        Debug.Log("adasd");
-        Debug.Log(boardPosition);
-
         board.UnHighlightAllCheckers();
         board.UnHighlightAllSquares();
 
         if (GetCheckerAt(boardPosition) != null && IsCheckerIsSameColorOfPlayer(GetCheckerAt(boardPosition)))
         {
-            Debug.Log("SEL");
             selectedChecker = GetCheckerAt(boardPosition);
             SelectChecker(boardPosition);
         }
@@ -94,9 +152,6 @@ public class Game : MonoBehaviour
     void SelectChecker(BoardPosition boardPosition)
     {
         var possibleMoves = PossibleMoves(boardPosition);
-
-        Debug.Log(possibleMoves.Count);
-
         HighlightSquares(possibleMoves);
         board.HighlightChecker(selectedChecker);
         isCheckerSelected = true;

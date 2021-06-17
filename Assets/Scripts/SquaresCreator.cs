@@ -50,4 +50,34 @@ public class SquaresCreator : MonoBehaviour
         squereGO.transform.localPosition = position;
         return result;
     }
+    //
+    // void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireCube(transform.position, transform.lossyScale);
+    //
+    //     var size = SquareSize();
+    //     var offsetX = -(transform.lossyScale.x - size) / 2;
+    //     var offsetZ = -(transform.lossyScale.z - size) / 2;
+    //     for (int i = 0; i < boardSize; i++)
+    //     {
+    //         for (int j = 0; j < boardSize; j++)
+    //         {
+    //             Vector3 positionSc = new Vector3(offsetX + i * size, 0, offsetZ + j * size);
+    //             DrawSquareGizmo(positionSc);
+    //         }
+    //     }
+    // }
+    //
+    // private void DrawSquareGizmo(Vector3 position)
+    // {
+    //     Gizmos.color = Color.green;
+    //     var size = new Vector3(SquareSize(), SquareSize(), SquareSize());
+    //     Gizmos.DrawWireCube(position, size);
+    // }
+    //
+    // private float SquareSize()
+    // {
+    //     return transform.lossyScale.x / boardSize;
+    // }
 }

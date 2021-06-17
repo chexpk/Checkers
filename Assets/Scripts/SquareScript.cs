@@ -27,7 +27,6 @@ public class SquareScript : MonoBehaviour
 
     public void Highlight()
     {
-        Debug.Log("HISHS");
         GetComponent<Renderer>().material = highlightMaterial;
     }
 

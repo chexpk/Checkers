@@ -1223,7 +1223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionOfCheckers: {fileID: 11400000, guid: bd6fba82c79e64c2eb602c5e34fc747e, type: 2}
-  isGameRun: 0
   playerSideColor: white
   board: {fileID: 610816741}
   playerMoveEvent:
@@ -1758,9 +1757,19 @@ PrefabInstance:
       propertyPath: board
       value: 
       objectReference: {fileID: 610816741}
+    - target: {fileID: 161571085220294259, guid: a1ffe219c6d6141eca5be3e888d2c2f2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 161571085220294262, guid: a1ffe219c6d6141eca5be3e888d2c2f2,
         type: 3}
       propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 161571085220294269, guid: a1ffe219c6d6141eca5be3e888d2c2f2,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3877951460148369513, guid: a1ffe219c6d6141eca5be3e888d2c2f2,
@@ -1832,6 +1841,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chess board (QuardBord inside) (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877951460148659273, guid: a1ffe219c6d6141eca5be3e888d2c2f2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1ffe219c6d6141eca5be3e888d2c2f2, type: 3}
