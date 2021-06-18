@@ -2,12 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.UIElements;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
-using UnityEngine.WSA;
+
 
 [System.Serializable]
 public class UnityEventGame : UnityEvent<string>
@@ -25,16 +22,19 @@ public class Game : MonoBehaviour
 
     private BoardPosition checkerBoardPosition;
     private Checker selectedChecker;
-    private Dictionary<Checker, BoardPosition> enemiesPosition;
 
     private void Start()
     {
-        board.ResetToPositionCheckers(positionOfCheckers);
+        // board.ResetToPositionCheckers(positionOfCheckers);
         // GetFibonacci();
         // GetRange();
         // GetFilter();
     }
 
+    public void PutCheckersOnPosition()
+    {
+        board.ResetToPositionCheckers(positionOfCheckers);
+    }
     void GetRange()
     {
         var range = Enumerable.Range(1, 10);
@@ -121,7 +121,7 @@ public class Game : MonoBehaviour
         var possibleMovesOrChops = GetPossibleChopsOrMoves(checkerBoardPosition);
         if (CheckMove(toBoardPosition, possibleMovesOrChops))
         {
-            TryChopEnemy(toBoardPosition); // изменить?
+            TryChopEnemy(toBoardPosition);
             board.MoveChecker(selectedChecker, toBoardPosition);
             ChangePlayer();
             playerMoveEvent.Invoke(playerSideColor);

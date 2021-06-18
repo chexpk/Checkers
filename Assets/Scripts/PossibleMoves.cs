@@ -5,8 +5,6 @@ using UnityEngine.Rendering;
 public class PossibleMoves
 {
     private Board board;
-    Dictionary<Checker, BoardPosition> enemiesPosition = new Dictionary<Checker, BoardPosition>();
-
     public PossibleMoves(Board board)
     {
         this.board = board;
@@ -19,14 +17,9 @@ public class PossibleMoves
         var possibleChop = PossibleChop(boardPosition, enemy);
         result = MovesWithoutCheckers(result);
         result = MovesForvad(boardPosition, result);
-        // result.AddRange(possibleChop);
         return result;
     }
 
-    public Dictionary<Checker, BoardPosition> GetEnemiesWithPositionOfChop()
-    {
-        return enemiesPosition;
-    }
 
     List<BoardPosition> AllMoves(BoardPosition boardPosition)
     {
@@ -83,19 +76,11 @@ public class PossibleMoves
             {
                 if (IsOnLineToChop(boardPosition, enemy, move))
                 {
-                    SaveEnemyWithPositionOfChop(enemy, move);
                     result.Add(move);
                 }
             }
-
         }
         return result;
-    }
-
-    Dictionary<Checker, BoardPosition> SaveEnemyWithPositionOfChop(BoardPosition enemyPosition, BoardPosition chopPosition)
-    {
-        enemiesPosition.Add(board.GetCheckerAt(enemyPosition),chopPosition);
-        return enemiesPosition;
     }
 
     List<BoardPosition> MovesWithoutCheckers(List<BoardPosition> moves)
@@ -118,8 +103,6 @@ public class PossibleMoves
 
         foreach (BoardPosition move in moves)
         {
-            // Debug.Log(HasCheckerAt(move));
-            // Debug.Log(move);
             if (CheckIsForwardMove(boardPosition, move))
             {
                 result.Add(move);
@@ -167,16 +150,11 @@ public class PossibleMoves
 
     string GetCheckerColor(BoardPosition boardPosition)
     {
-        // Debug.Log(HasCheckerAt(boardPosition));
-        // Debug.Log(boardPosition);
-        //
         return board.GetCheckerAt(boardPosition).GetColor();
     }
 
     bool CheckIsForwardMove(BoardPosition boardPosition, BoardPosition toBoardPosition)
     {
-        // Debug.Log(HasCheckerAt(boardPosition));
-        // возможно отсечь отсутствие тут?
         bool result = false;
 
         if (GetCheckerColor(boardPosition) == "white")
