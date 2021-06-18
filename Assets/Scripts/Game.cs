@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 using UnityEngine.WSA;
 
 [System.Serializable]
@@ -110,16 +112,17 @@ public class Game : MonoBehaviour
             }
             isCheckerSelected = false;
             selectedChecker = null;
+            checkerBoardPosition = null;
         }
     }
 
     void TryMove(BoardPosition toBoardPosition)
     {
-        var possibleMoves = PossibleMoves(checkerBoardPosition);
-        if (CheckMove(toBoardPosition, possibleMoves))
+        var possibleMovesOrChops = GetPossibleChopsOrMoves(checkerBoardPosition);
+        if (CheckMove(toBoardPosition, possibleMovesOrChops))
         {
+            TryChopEnemy(toBoardPosition); // изменить?
             board.MoveChecker(selectedChecker, toBoardPosition);
-            TryChopEnemy(toBoardPosition);
             ChangePlayer();
             playerMoveEvent.Invoke(playerSideColor);
         }
@@ -127,13 +130,37 @@ public class Game : MonoBehaviour
 
     void TryChopEnemy(BoardPosition chopBoardPosition)
     {
-        foreach (var enemy in enemiesPosition)
+        var possibleChops = PossibleChops(checkerBoardPosition);
+        if (CheckMove(chopBoardPosition, possibleChops))
         {
-            if (enemy.Value == chopBoardPosition)
-            {
-                board.DeleteChecler(enemy.Key);
-            }
+            var checkerPosition = GetCheckerBoardPosition(selectedChecker);
+            var enemyChecker = GetEnemyChecker(checkerBoardPosition, chopBoardPosition);
+            board.DeleteChecler(enemyChecker);
         }
+    }
+
+    Checker GetEnemyChecker(BoardPosition checkerBoardPosition, BoardPosition chopBoardPosition)
+    {
+        int enemyX;
+        int enemyY;
+        if (chopBoardPosition.x > checkerBoardPosition.x)
+        {
+            enemyX = chopBoardPosition.x - 1;
+        }
+        else
+        {
+            enemyX = checkerBoardPosition.x - 1;
+        }
+        if (chopBoardPosition.y > checkerBoardPosition.y)
+        {
+            enemyY = chopBoardPosition.y - 1;
+        }
+        else
+        {
+            enemyY = checkerBoardPosition.y - 1;
+        }
+        var enemyBoardPosition = new BoardPosition(enemyX, enemyY);
+        return GetCheckerAt(enemyBoardPosition);
     }
 
     bool CheckMove(BoardPosition toBoardPosition, List<BoardPosition> possibleMoves)
@@ -151,11 +178,29 @@ public class Game : MonoBehaviour
 
     void SelectChecker(BoardPosition boardPosition)
     {
-        var possibleMoves = PossibleMoves(boardPosition);
-        HighlightSquares(possibleMoves);
+        var possibleMovesOrChops = GetPossibleChopsOrMoves(boardPosition);
+        HighlightSquares(possibleMovesOrChops);
+
         board.HighlightChecker(selectedChecker);
         isCheckerSelected = true;
         checkerBoardPosition = boardPosition;
+    }
+
+    List<BoardPosition> GetPossibleChopsOrMoves(BoardPosition boardPosition)
+    {
+        var possibleChops = PossibleChops(boardPosition);
+        // Debug.Log(possibleChops.Count);
+        if (possibleChops.Count > 0)
+        {
+            // Debug.Log("есть рубить");
+            return possibleChops;
+        }
+        else
+        {
+            // Debug.Log("есть ходить");
+            var possibleMoves = PossibleMoves(boardPosition);
+            return possibleMoves;
+        }
     }
 
     void HighlightSquares(List<BoardPosition> squares)
@@ -169,8 +214,14 @@ public class Game : MonoBehaviour
     List<BoardPosition> PossibleMoves(BoardPosition boardPosition)
     {
         PossibleMoves possibleMoves = new PossibleMoves(board);
-        enemiesPosition = possibleMoves.GetEnemiesWithPositionOfChop(); // вытащить
+        // enemiesPosition = possibleMoves.GetEnemiesWithPositionOfChop(); // вытащить
         return possibleMoves.Call(boardPosition, playerSideColor);
+    }
+
+    List<BoardPosition> PossibleChops(BoardPosition boardPosition)
+    {
+        PossibleChops possibleChops = new PossibleChops(board);
+        return possibleChops.Call(boardPosition, playerSideColor);
     }
 
     bool IsCheckerIsSameColorOfPlayer(Checker checker)
@@ -208,5 +259,10 @@ public class Game : MonoBehaviour
     Checker GetCheckerAt (BoardPosition boardPosition)
     {
         return board.GetCheckerAt(boardPosition);
+    }
+
+    BoardPosition GetCheckerBoardPosition(Checker checker)
+    {
+        return board.GetCheckerBoardPosition(checker);
     }
 }

@@ -37,7 +37,8 @@ public class Board : MonoBehaviour
 
         // Коорд на доске
         //TODO - выделить в метод? (часть используется в удалении)
-        var fromBoardPosition = checker.GetBoardPosition();
+        var fromBoardPosition = GetCheckerBoardPosition(checker);
+        // var fromBoardPosition = checker.GetBoardPosition();
         checkers[toBoardPosition.x, toBoardPosition.y] = checkers[fromBoardPosition.x, fromBoardPosition.y];
         checkers[fromBoardPosition.x, fromBoardPosition.y] = null;
         checker.SetBoardPosition(toBoardPosition);
@@ -64,18 +65,10 @@ public class Board : MonoBehaviour
         checker.SetBoardPosition(boardPosition);
     }
 
-    Vector3 GetSquarePosition(int x, int y)
-    {
-        SquareScript squareScript = squares[x, y].transform.gameObject.GetComponent<SquareScript>();
-        return squareScript.GetPosition();
-    }
-
-    GameObject CreateChecker(Vector3 position, string color)
-    {
-        var result = Instantiate(checkerPref, position, Quaternion.identity);
-        result.GetComponent<Checker>().SetColor(color);
-        return result;
-    }
+     public BoardPosition GetCheckerBoardPosition(Checker checker)
+     {
+         return checker.GetBoardPosition();
+     }
 
     public void HighlightChecker(Checker checker)
     {
@@ -123,5 +116,18 @@ public class Board : MonoBehaviour
         var deletedPosition = checker.GetBoardPosition();
         checkers[deletedPosition.x, deletedPosition.y] = null;
         checker.Delete();
+    }
+
+    Vector3 GetSquarePosition(int x, int y)
+    {
+        SquareScript squareScript = squares[x, y].transform.gameObject.GetComponent<SquareScript>();
+        return squareScript.GetPosition();
+    }
+
+    GameObject CreateChecker(Vector3 position, string color)
+    {
+        var result = Instantiate(checkerPref, position, Quaternion.identity);
+        result.GetComponent<Checker>().SetColor(color);
+        return result;
     }
 }

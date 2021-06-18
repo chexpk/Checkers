@@ -2,30 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class PossibleMoves
+public class PossibleChops
 {
     private Board board;
-    Dictionary<Checker, BoardPosition> enemiesPosition = new Dictionary<Checker, BoardPosition>();
 
-    public PossibleMoves(Board board)
+    public PossibleChops(Board board)
     {
         this.board = board;
     }
 
     public List<BoardPosition> Call(BoardPosition boardPosition, string playerSideColor)
     {
-        var result = AllMoves(boardPosition);
-        var enemy = GetNearEnemy(result, playerSideColor);
+        var allMoves = AllMoves(boardPosition);
+        var enemy = GetNearEnemy(allMoves, playerSideColor);
         var possibleChop = PossibleChop(boardPosition, enemy);
-        result = MovesWithoutCheckers(result);
-        result = MovesForvad(boardPosition, result);
-        // result.AddRange(possibleChop);
-        return result;
-    }
-
-    public Dictionary<Checker, BoardPosition> GetEnemiesWithPositionOfChop()
-    {
-        return enemiesPosition;
+        return possibleChop;
     }
 
     List<BoardPosition> AllMoves(BoardPosition boardPosition)
@@ -83,19 +74,11 @@ public class PossibleMoves
             {
                 if (IsOnLineToChop(boardPosition, enemy, move))
                 {
-                    SaveEnemyWithPositionOfChop(enemy, move);
                     result.Add(move);
                 }
             }
-
         }
         return result;
-    }
-
-    Dictionary<Checker, BoardPosition> SaveEnemyWithPositionOfChop(BoardPosition enemyPosition, BoardPosition chopPosition)
-    {
-        enemiesPosition.Add(board.GetCheckerAt(enemyPosition),chopPosition);
-        return enemiesPosition;
     }
 
     List<BoardPosition> MovesWithoutCheckers(List<BoardPosition> moves)
@@ -112,22 +95,6 @@ public class PossibleMoves
         return result;
     }
 
-    List<BoardPosition> MovesForvad(BoardPosition boardPosition, List<BoardPosition> moves)
-    {
-        List<BoardPosition> result = new List<BoardPosition>();
-
-        foreach (BoardPosition move in moves)
-        {
-            // Debug.Log(HasCheckerAt(move));
-            // Debug.Log(move);
-            if (CheckIsForwardMove(boardPosition, move))
-            {
-                result.Add(move);
-            }
-        }
-        return result;
-    }
-
     bool HasCheckerAt(BoardPosition boardPosition)
     {
         return board.GetCheckerAt(boardPosition) != null;
@@ -135,8 +102,6 @@ public class PossibleMoves
 
     bool IsCheckerIsSameColorOfPlayer(BoardPosition boardPosition, string playerSideColor)
     {
-        // Debug.Log(HasCheckerAt(boardPosition));
-
         bool result;
         if (GetCheckerColor(boardPosition) == playerSideColor)
         {
@@ -151,7 +116,6 @@ public class PossibleMoves
 
     bool IsOnLineToChop(BoardPosition boardPosition, BoardPosition enemyBoardPosition, BoardPosition moveBoardPosition)
     {
-
         if (enemyBoardPosition.x < boardPosition.x && moveBoardPosition.x < enemyBoardPosition.x && boardPosition.y != moveBoardPosition.y)
         {
             return true;
@@ -167,41 +131,6 @@ public class PossibleMoves
 
     string GetCheckerColor(BoardPosition boardPosition)
     {
-        // Debug.Log(HasCheckerAt(boardPosition));
-        // Debug.Log(boardPosition);
-        //
         return board.GetCheckerAt(boardPosition).GetColor();
-    }
-
-    bool CheckIsForwardMove(BoardPosition boardPosition, BoardPosition toBoardPosition)
-    {
-        // Debug.Log(HasCheckerAt(boardPosition));
-        // возможно отсечь отсутствие тут?
-        bool result = false;
-
-        if (GetCheckerColor(boardPosition) == "white")
-        {
-            if (toBoardPosition.y > boardPosition.y)
-            {
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-        }
-        if (GetCheckerColor(boardPosition) == "black")
-        {
-            if (toBoardPosition.y < boardPosition.y)
-            {
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-        }
-
-        return result;
     }
 }

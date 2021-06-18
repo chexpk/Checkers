@@ -183,7 +183,7 @@ Transform:
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!114 &100277892
 MonoBehaviour:
@@ -507,7 +507,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -801,7 +801,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1144269166
 GameObject:
@@ -1222,7 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4830c9de9e242a7bef1e9978f91ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOfCheckers: {fileID: 11400000, guid: bd6fba82c79e64c2eb602c5e34fc747e, type: 2}
+  positionOfCheckers: {fileID: 11400000, guid: 9034efc39bc9d47569ad803908d59912, type: 2}
   playerSideColor: white
   board: {fileID: 610816741}
   playerMoveEvent:
@@ -1241,7 +1241,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1440115266
 GameObject:
@@ -1336,7 +1336,7 @@ RectTransform:
   - {fileID: 1778363336}
   - {fileID: 1144269167}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1559,7 +1559,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1812191324
 GameObject:
@@ -1810,7 +1810,7 @@ PrefabInstance:
     - target: {fileID: 3877951460148369513, guid: a1ffe219c6d6141eca5be3e888d2c2f2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3877951460148369513, guid: a1ffe219c6d6141eca5be3e888d2c2f2,
         type: 3}
